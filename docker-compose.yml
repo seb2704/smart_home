@@ -1,0 +1,51 @@
+version: '3.7'
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+    pgdata: {}
+
+networks:
+  front-tier:
+  back-tier:
+
+services:
+
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    volumes:
+      - pgdata:/var/lib/postgresql@14/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+
+  grafana:
+    image: grafana/grafana:latest
+    user: "472"
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dashboards:/opt/grafana/dashboards
+      - grafana_data:/var/lib/grafana
+    networks:
+      - back-tier
+      - front-tier
+    restart: always
+
+  streamlit:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8501:8501"
+    networks:
+      - front-tier
+    restart: always

@@ -1,0 +1,1 @@
+alarm_state (door_open, alarm, date, activated)
