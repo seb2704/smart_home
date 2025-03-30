@@ -11,6 +11,9 @@ streamlit = "^1.41.1"
 apscheduler = "^3.11.0"
 psycopg2 = "^2.9.10"
 pandas = "^2.2.3"
+rpi-rf = "^0.9.7"
+rpi-gpio = "^0.7.1"
+gpiozero = "^2.0.1"
 
 
 [build-system]
